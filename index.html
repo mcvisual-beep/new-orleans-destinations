@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<!-- Use the HTML and CSS you developed in module 01 to fill out this template.-->
+
+<head>
+  <meta charset=utf-8 />
+  <title>Lab 05 Work Template</title>
+
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+
+  <!-- **************************************************************** -->
+  <!-- Check to make this links to the most current version of Leaflet! -->
+  <!-- **************************************************************** -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <!-- **************************************************************** -->
+  <!-- Google Fonts Link -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans:300" rel="stylesheet">
+  <style>
+    /* The map element */
+    #map {
+      width: 100%;
+      height: 500px;
+    }
+
+    /* Add HTML element styles */
+
+
+
+
+
+    /* Change opacity on hover over the icon class */
+
+    .icon:hover {
+      opacity: .8;
+    }
+
+    .leaflet-popup-content h3 {
+      font-family: 'Work Sans', Sans-Serif;
+      font-size: 1.3em;
+      margin-bottom: 6px;
+    }
+    .leaflet-popup-content p {
+      font-family: 'Open Sans', Sans-Serif;
+      margin: 3px 0 6px;
+      font-size: 1.1em;
+    }
+    .leaflet-popup-content a {
+      font-weight: normal;
+    }
+
+
+    .leaflet-popup-content h3 {
+      font-family: 'Work Sans', Sans-Serif;
+      font-size: 1.3em;
+      margin-bottom: 6px;
+    }
+
+    .leaflet-popup-content p {
+      font-family: 'Open Sans', Sans-Serif;
+      margin: 3px 0 6px;
+      font-size: 1.1em;
+    }
+
+    .leaflet-popup-content a {
+      font-family: 'Open Sans', Sans-Serif;
+      font-weight: normal;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Places of interest (pois) in New Orleans, LA </h1>
+  </header>
+
+  <section>
+    <div id='map'></div>
+  </section>
+
+  <section>
+
+    <p>Additional information about <a href="#">the data</a> and map goes here. </p>
+
+  </section>
+  <footer>
+    <p>Map authored by me, MY NAME</p>
+    <hr>
+
+    <a href="https://newmapsplus.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png" alt="University of Kentucky Geography">
+    </a>
+
+    <a href="https://uky-gis.github.io">
+      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png" alt="University of Kentucky Geography">
+    </a>
+  </footer>
+  <!-- **************************************************************** -->
+  <!-- Check to make this links to the most current version of Leaflet! -->
+  <!-- **************************************************************** -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <!-- **************************************************************** -->
+  <script>
+    var map = L.map('map', {
+    center: [29.9584, -90.0619],
+    zoom: 14,
+});
+
+    // Get basemap URL from Leaflet Providers
+    var basemap_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
+
+    // Get basemap attributes from Leaflet Providers
+    var basemap_attributes = {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    };
+    // requests some map tiles
+    var tiles = L.tileLayer(basemap_url, basemap_attributes);
+
+    map.addLayer(tiles);
+
+    // Begin writing/modifying code for Lab 05 here
+
+  // hotspots object
+    var hotspots = {
+      name: "Points of Interest in New Orleans",
+      properties:[{ 
+        name: "Mariza",
+      description: "Italian-inspired fare dished out in an airy loft building with an industrial-chic vibe.",
+      coordinates: [29.9629337, -90.0501008],
+      url: 'http://marizaneworleans.com/',
+      phone: '(504) 598-5700',
+      icon: 'svgs/restaurant-15.svg'
+      },
+      {
+      name: "Jackson Square",
+      description: "Jackson Square is a historic park in the French Quarter of New Orleans, Louisiana. (Wikipedia)",
+      coordinates: [29.957203, -90.063067],
+      url: 'https://www.nola.gov/parks-and-parkways/parks-squares/jackson-square/',
+      phone: '(504) 658-3200',
+      icon: 'svgs/park-15.svg'
+      },
+      {
+      name: "Preservation Hall",
+      description: "Situated in the heart of the French Quarter on St. Peter Street, the Preservation Hall venue presents intimate, acoustic New Orleans Jazz concerts over 350 nights a year featuring ensembles from a current collective of 50+ local master practitioners. (Website)",
+      coordinates: [29.9583, -90.0654],
+      url: 'https://www.preservationhall.com/',
+      phone: '504-522-2841',
+      icon: 'svgs/music-15.svg'
+      }   
+
+    ]};
+    
+// Console.log hotspots
+//console.log(hotspots[0]);
+
+//console.log(hotspots[0]name); // Mariza
+
+//console.log(hotspots[0].properties); // Object { ... }
+
+//console.log(hotspots[0].properties.description); // Italian-inspired fare ...
+
+//console.log(hotspots[0].properties.url); // http://marizaneworleans.com/
+
+//console.log(hotspots[0].properties.coordinates); // [29.9629337, -90.0501008]
+
+// variable to reference the zero index-used a different method
+ //var i = 0;
+// assign a string, wrapping the name of the place within two HTML bold tags
+//var popup = "<b>" + hotspots[i].name + "</b>"
+
+// Marker
+for (var i=0; i < hotspots.properties.length; i++) {
+
+            var allLocations = hotspots.properties[i].coordinates;
+            console.log(allLocations);
+
+            var popupName = hotspots.properties[i].name;
+            console.log(popupName);
+
+            var popupDescription=hotspots.properties[i].description
+            console.log(popupDescription);
+
+            var popupUrl=hotspots.properties[i].url
+            console.log(popupUrl);
+
+            var popupPhone=hotspots.properties[i].phone
+            console.log(popupPhone);
+
+            var props = hotspots.properties[i].icon
+ 
+            // Icon Object
+            var icon = L.icon({
+            iconUrl: props,
+            iconSize: [40, 40],
+            popupAnchor: [0, -22],
+            className: "icon"
+            })
+
+            // Popup
+            var popup=`<h3>${popupName}</h3>
+             <p>${popupDescription}</p>
+             <p><b>website</b>: <a href='${popupUrl}'>${popupUrl}</a></p>
+             <p><b>phone</b>: ${popupPhone}</p>` 
+
+            
+
+            //  Marker Location
+            var marker=L.marker(allLocations, {
+              icon:icon
+            })
+            
+
+            .addTo(map)
+            .bindPopup(popup);
+        
+        
+// Marker usability code
+marker.on("mouseover", function() {
+  this.openPopup();
+});
+
+marker.on("mouseover", function() {
+  this.openPopup();
+});
+marker.on("mouseout", function() {
+  this.closePopup();
+});
+};
+
+
+// Console.log messages
+//console.log(props); // Object { ... }
+
+//console.log(props.description); // Italian-inspired fare ...
+
+//console.log(props.url); // http://marizaneworleans.com/
+
+  </script>
+
+</body>
+
+</html>
