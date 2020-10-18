@@ -1,243 +1,312 @@
 <!DOCTYPE html>
 <html>
-<!-- Use the HTML and CSS you developed in module 01 to fill out this template.-->
 
 <head>
   <meta charset=utf-8 />
-  <title>Lab 05 Work Template</title>
-
+  <title>US Rental Prices</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
 
-  <!-- **************************************************************** -->
-  <!-- Check to make this links to the most current version of Leaflet! -->
-  <!-- **************************************************************** -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
-  <!-- **************************************************************** -->
-  <!-- Google Fonts Link -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans:300" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
   <style>
-    /* The map element */
+     body {
+      margin: 0;
+      padding: 0;
+      background: rgba(63, 63, 63, 0.9); /* dark */
+      font-family: Lato, sans-serif;
+      font-size: 100%;
+      color: #ddd; /* light */
+    }
+
+
+    header {
+      width: 0%;
+    }
+
+    h1 {
+      display: inline-block;
+      margin-right: 20px;
+      color: #ddd;
+    }
+
+    h2 {
+      display: inline-block;
+      color: #ddd;
+    }
+
     #map {
       width: 100%;
       height: 500px;
+      margin: 20px auto; 
+      background: rgba(63, 63, 63, 0.9); /* with transparency */
     }
 
-    /* Add HTML element styles */
-
-
-
-
-
-    /* Change opacity on hover over the icon class */
-
-    .icon:hover {
-      opacity: .8;
+    a {
+      color: #2999fc;
     }
 
-    .leaflet-popup-content h3 {
-      font-family: 'Work Sans', Sans-Serif;
-      font-size: 1.3em;
-      margin-bottom: 6px;
+    a:hover {
+      color: rgb(67, 69, 71);
+      text-decoration: none;
     }
-    .leaflet-popup-content p {
-      font-family: 'Open Sans', Sans-Serif;
-      margin: 3px 0 6px;
+
+    footer {
+      padding: 6px 10%;
+      width: 80%;
+    }
+
+    p {
+      font-size: 1em;
+      color: #ddd;
+    }
+
+    .legend {
+      padding: 6px 8px;
+      font-size: 1em;
+      /* Use transparency to blend elements. */ 
+      border: 2px solid rgba(244, 244, 244, 0.2);
+      background: rgba(100, 100, 100, 0.9);
+      color: rgba(244, 244, 244, 0.8);
+      border-radius: 5px;
+    }
+
+    .legend h3 {
       font-size: 1.1em;
+      font-weight: bolder;
+      color: #ddd; /* Light */
+      margin: 0 0 10px 0;
     }
-    .leaflet-popup-content a {
-      font-weight: normal;
+.legend span {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 0 10px 4px 0;
+}
+.legend label {
+    font-size: 1.1em;
+}
+.legend label:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.leaflet-bar a {
+      /* Override the default style for Leaflet's zoom  */
+      background: rgba(100, 100, 100, 0.9);
+      color: rgba(244, 244, 244, 0.8);
     }
 
-
-    .leaflet-popup-content h3 {
-      font-family: 'Work Sans', Sans-Serif;
-      font-size: 1.3em;
-      margin-bottom: 6px;
+    footer {
+      padding: 6px 10%;
+      width: 80%;
     }
 
-    .leaflet-popup-content p {
-      font-family: 'Open Sans', Sans-Serif;
-      margin: 3px 0 6px;
-      font-size: 1.1em;
-    }
-
-    .leaflet-popup-content a {
-      font-family: 'Open Sans', Sans-Serif;
-      font-weight: normal;
+    p {
+      font-size: 1em;
+      color: #ddd;
     }
   </style>
 </head>
 
 <body>
-
   <header>
-    <h1>Places of interest (pois) in New Orleans, LA </h1>
   </header>
 
-  <section>
-    <div id='map'></div>
-  </section>
+  <div id='map'></div>
 
-  <section>
-
-    <p>Additional information about <a href="#">the data</a> and map goes here. </p>
-
-  </section>
   <footer>
-    <p>Map authored by me, MY NAME</p>
-    <hr>
-
-    <a href="https://newmapsplus.github.io">
-      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-nmp-75px-h-gray.png" alt="University of Kentucky Geography">
-    </a>
-
-    <a href="https://uky-gis.github.io">
-      <img src="https://newmapsplus.github.io/assets/graphics/logo-2018-geography-75px-h.png" alt="University of Kentucky Geography">
-    </a>
-  </footer>
-  <!-- **************************************************************** -->
-  <!-- Check to make this links to the most current version of Leaflet! -->
-  <!-- **************************************************************** -->
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-  <!-- **************************************************************** -->
-  <script>
-    var map = L.map('map', {
-    center: [29.9584, -90.0619],
-    zoom: 14,
-});
-
-    // Get basemap URL from Leaflet Providers
-    var basemap_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png'
-
-    // Get basemap attributes from Leaflet Providers
-    var basemap_attributes = {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    };
-    // requests some map tiles
-    var tiles = L.tileLayer(basemap_url, basemap_attributes);
-
-    map.addLayer(tiles);
-
-    // Begin writing/modifying code for Lab 05 here
-
-  // hotspots object
-    var hotspots = {
-      name: "Points of Interest in New Orleans",
-      properties:[{ 
-        name: "Mariza",
-      description: "Italian-inspired fare dished out in an airy loft building with an industrial-chic vibe.",
-      coordinates: [29.9629337, -90.0501008],
-      url: 'http://marizaneworleans.com/',
-      phone: '(504) 598-5700',
-      icon: 'svgs/restaurant-15.svg'
-      },
-      {
-      name: "Jackson Square",
-      description: "Jackson Square is a historic park in the French Quarter of New Orleans, Louisiana. (Wikipedia)",
-      coordinates: [29.957203, -90.063067],
-      url: 'https://www.nola.gov/parks-and-parkways/parks-squares/jackson-square/',
-      phone: '(504) 658-3200',
-      icon: 'svgs/park-15.svg'
-      },
-      {
-      name: "Preservation Hall",
-      description: "Situated in the heart of the French Quarter on St. Peter Street, the Preservation Hall venue presents intimate, acoustic New Orleans Jazz concerts over 350 nights a year featuring ensembles from a current collective of 50+ local master practitioners. (Website)",
-      coordinates: [29.9583, -90.0654],
-      url: 'https://www.preservationhall.com/',
-      phone: '504-522-2841',
-      icon: 'svgs/music-15.svg'
-      }   
-
-    ]};
+    <h1>US Rental Prices</h1>
+    <h2>Average Rental Prices by County</h2>
+    <p>Map authored by Michaella Mullins</p>
+    <p>This map shows the average rental prices in the US divided by county.Data taken from <a href="https://data.census.gov/cedsci/deeplinks?url=https%3A%2F%2Ffactfinder.census.gov%2F">American Fact Finder</a> and the <a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html">US Census Cartographic Boundary Shapefiles</a></p>
     
-// Console.log hotspots
-//console.log(hotspots[0]);
+  </footer>
 
-//console.log(hotspots[0]name); // Mariza
+  <!-- Load scripts using Subresource Integrity (SRI) is a security feature 
+      that enables browsers to verify that resources they fetch (from a CDN) 
+      are delivered without unexpected manipulation. -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <script src='https://unpkg.com/simple-statistics@7.2.0/dist/simple-statistics.min.js'>
+  </script>
 
-//console.log(hotspots[0].properties); // Object { ... }
+  <script>
+     var options = {
+    center: [37.8, -85.8],
+    zoom: 5,
+    zoomSnap: .1,
+    zoomControl: false
+}
+var map = L.map('map', options);
 
-//console.log(hotspots[0].properties.description); // Italian-inspired fare ...
-
-//console.log(hotspots[0].properties.url); // http://marizaneworleans.com/
-
-//console.log(hotspots[0].properties.coordinates); // [29.9629337, -90.0501008]
-
-// variable to reference the zero index-used a different method
- //var i = 0;
-// assign a string, wrapping the name of the place within two HTML bold tags
-//var popup = "<b>" + hotspots[i].name + "</b>"
-
-// Marker
-for (var i=0; i < hotspots.properties.length; i++) {
-
-            var allLocations = hotspots.properties[i].coordinates;
-            console.log(allLocations);
-
-            var popupName = hotspots.properties[i].name;
-            console.log(popupName);
-
-            var popupDescription=hotspots.properties[i].description
-            console.log(popupDescription);
-
-            var popupUrl=hotspots.properties[i].url
-            console.log(popupUrl);
-
-            var popupPhone=hotspots.properties[i].phone
-            console.log(popupPhone);
-
-            var props = hotspots.properties[i].icon
+var attributeValue = "RENT"
+var countyName ="NAME"
  
-            // Icon Object
-            var icon = L.icon({
-            iconUrl: props,
-            iconSize: [40, 40],
-            popupAnchor: [0, -22],
-            className: "icon"
-            })
 
-            // Popup
-            var popup=`<h3>${popupName}</h3>
-             <p>${popupDescription}</p>
-             <p><b>website</b>: <a href='${popupUrl}'>${popupUrl}</a></p>
-             <p><b>phone</b>: ${popupPhone}</p>` 
 
-            
+ var countyLayer=$.getJSON("data/counties_median_rent_2015.json", function (data) {
+      var dataLayer = L.geoJson(data, {
+        style: function (feature) {
+          return {
+            color: '#dddddd',
+            weight: 1,
+            fillOpacity: 1,
+            fillColor: '#1f78b4'
+          };
+        }
+      }
+      ).addTo(map);
+      // empty array to hold all our values
+      drawMap(dataLayer);
+    }
+    );
+  
+    
+    function drawMap(dataLayer) {
+      var breaks = getClassBreaks(dataLayer);
+      dataLayer.eachLayer(function (layer) {
+        var props = layer.feature.properties;
+        layer.setStyle({
+          fillColor: getColor(props[attributeValue], breaks)
+        }
+        );
+      }
+      );
+     drawLegend(breaks) 
+    }
 
-            //  Marker Location
-            var marker=L.marker(allLocations, {
-              icon:icon
-            })
-            
+    function getClassBreaks(dataLayer) {
+      // create empty Array for storing values
+      var values = [];
+      
+      // loop through all the counties
+      dataLayer.eachLayer(function (layer) {
+        var props = layer.feature.properties;
+        var value = props[attributeValue];
+        if(props[attributeValue]!==null){
+          var value =Number(props[attributeValue]);
+        }
+        else if(props[attributeValue]!==0){
+          return values;
+        }
 
-            .addTo(map)
-            .bindPopup(popup);
+        values.push(value);
+
+         // Popup
+        layer.bindTooltip(`<b>${props[countyName]}</b>
+				<br><b>Average Rent: $</b>${props[attributeValue]} `
+        ).addTo(map);
+      }
+      );
+      // determine similar clusters
+      var clusters = ss.ckmeans(values, 6);
+      // create an array of the lowest value within each cluster
+      var breaks = clusters.map(function (cluster) {
+        return [cluster[0], cluster.pop()];
         
-        
-// Marker usability code
-marker.on("mouseover", function() {
-  this.openPopup();
-});
+      }
+      );
+      return breaks; // return Array of class breaks
+    }
+      // create a new Leaflet control object, and position it top left
+    function getColor(d, breaks) {
 
-marker.on("mouseover", function() {
-  this.openPopup();
-});
-marker.on("mouseout", function() {
-  this.closePopup();
-});
+  if(d <= breaks[0][1]) {
+      return '#c1adea';
+  } else if(d <= breaks[1][1]) {
+      return '#b299e5';
+  } else if(d <= breaks[2][1]) {
+      return '#a284e0';
+  } else if(d <= breaks[3][1]) {
+      return '#9370db';
+  } else if(d <= breaks[4][1]) {
+      return '#845cd6';
+  } else if(d <= breaks[5][1]) {
+      return '#7447d1';
+  }
+  };
+ // end getColor
+
+  function drawLegend(breaks){
+
+    // create a new Leaflet control object, and position it top left
+    var legend = L.control({position: 'topleft'});
+    // when the legend is added to the map
+    legend.onAdd = function () {
+
+    // create a new HTML <div> element and give it a class name of "legend"
+    var div = L.DomUtil.create('div', 'legend');
+
+    // first append an <h3> tag to the div holding the current attribute
+    // and norm values (i.e., the mapped phenomena)
+    div.innerHTML = `<h3>Average Rental Price</h3>`;
+
+    // for each of our breaks
+    for (var i = 0; i < breaks.length; i++) {
+        // determine the color associated with each break value,
+        // including the lower range value
+        var color = getColor(breaks[i][0], breaks);
+
+        // concatenate a <span> tag styled with the color and the range values
+        // of that class and include a label with the low and a high ends of that class range
+        div.innerHTML +=
+            `<span style="background:${color}"></span>
+            <label>${(breaks[i][0]*1).toLocaleString()}&mdash;
+            ${(breaks[i][1]*1).toLocaleString()}</label>`;
+    }
+
+    // return the populated div to be added to the map
+    return div;
 };
 
+// add the legend to the map
+legend.addTo(map);
+}
+map.addControl( L.control.zoom({ position: 'topright' }));
+ 
+ // Tell jQuery to wait until data is loaded before executing a function
+$.when(countyLayer).done(function () {
+  // load, filter, and style the state outline 
+  $.getJSON("data/us_states_20m.geojson", function (data) {
 
-// Console.log messages
-//console.log(props); // Object { ... }
+      var stateLayer = L.geoJson(data, {
+        style: function (feature) {
+          return {
+            // Let's experiment with these colors shortly
+            //  color: '#222222', // Gray
+            color: '#ffffff', // White
+            // Make line weight larger than the county outline
+            weight: 2,
+            fillOpacity: 0,
+            // This property allows us control interactivty of layer
+            interactive: false
+          };
+        },
 
-//console.log(props.description); // Italian-inspired fare ...
+        // Filter for the correct state to use
+        filter: function (feature) {
+          if (feature.properties.NAME) {
+            return feature;
+          }
+        }
+      }
+      );
 
-//console.log(props.url); // http://marizaneworleans.com/
+      // Add layer to map!
+      stateLayer.addTo(map)
 
+  }
+  );
+}
+);
+ 
   </script>
 
 </body>
